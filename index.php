@@ -53,16 +53,13 @@ $count = (int)file_get_contents($counterFile);
             z-index: 100;
         }
 
-        /* Gambar melintas */
+        /* Gambar */
         .fly-image {
             position: absolute;
             left: -150px;
             width: 100px;
-            /* ukuran aman untuk HP */
             height: auto;
-            /* biar tidak gepeng */
             object-fit: contain;
-            /* menjaga proporsi gambar */
             animation: fly 2.5s linear forwards;
         }
 
@@ -93,29 +90,24 @@ $count = (int)file_get_contents($counterFile);
 
             document.getElementById("clickSound").cloneNode(true).play();
 
-            // Animasi angka
             counter.style.transform = "scale(1.2)";
             setTimeout(() => counter.style.transform = "scale(1)", 100);
 
-            // Update count via PHP
             fetch("klik.php")
                 .then(res => res.text())
                 .then(newCount => {
                     counter.textContent = newCount;
                 });
 
-            // Panggil animasi gambar melintas
             spawnFlyingImage();
         }
 
-        // Fungsi membuat gambar baru
         function spawnFlyingImage() {
             const img = document.createElement("img");
 
-            img.src = "gambar/ayame.png"; // ganti ke gambar kamu
+            img.src = "gambar/ayame.png";
             img.className = "fly-image";
 
-            // aman untuk HP (10%–80% dari tinggi layar)
             img.style.top = (Math.random() * 70 + 10) + "%";
 
             document.body.appendChild(img);
@@ -126,17 +118,14 @@ $count = (int)file_get_contents($counterFile);
         }
 
 
-        // Klik layar
         document.addEventListener("click", function(e) {
             if (e.target !== resetBtn) addCount();
         });
 
-        // Ketuk layar HP
         document.addEventListener("touchstart", function(e) {
             if (e.target !== resetBtn) addCount();
         });
 
-        // Reset ke 0
         resetBtn.addEventListener("click", function() {
             fetch("reset.php")
                 .then(res => res.text())
